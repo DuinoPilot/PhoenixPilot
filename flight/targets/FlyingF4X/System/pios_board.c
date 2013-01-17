@@ -39,7 +39,7 @@
 #include <pios.h>
 #include <openpilot.h>
 #include <uavobjectsinit.h>
-#include "hwflyingf4x.h"
+#include "hwflyingf4.h"
 #include "manualcontrolsettings.h"
 
 /* This file defines the what and where regarding all hardware connected to the
