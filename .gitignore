@@ -87,3 +87,23 @@ androidgcs/gen/
 /.cproject
 /.project
 /.metadata
+
+#############
+## Keil
+#############
+*.dep
+*.bak
+*.lst
+*.d
+*.crf
+*.map
+*.plg
+*.idx
+*.uvopt
+*.uvgui.*
+*.__i
+*._ia
+*.tra
+*.lnp
+*.axf
+[Bb]uild/
