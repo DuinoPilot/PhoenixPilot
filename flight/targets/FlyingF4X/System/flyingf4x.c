@@ -103,7 +103,7 @@ int main()
 						 INIT_TASK_STACK, NULL, INIT_TASK_PRIORITY,
 						 &initTaskHandle);
 	PIOS_Assert(result == pdPASS);
-while(1){}
+
 	/* Start the FreeRTOS scheduler */
 	vTaskStartScheduler();
 
@@ -126,10 +126,10 @@ void
 initTask(void *parameters)
 {
 	/* board driver init */
-	PIOS_Board_Init();
+//	PIOS_Board_Init();
 
 	/* Initialize modules */
-	MODULE_INITIALISE_ALL;
+//	MODULE_INITIALISE_ALL;
 
 	/* terminate this task */
 	vTaskDelete(NULL);
