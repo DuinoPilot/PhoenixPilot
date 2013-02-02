@@ -1,0 +1,6 @@
+-Wl,-static
+-Wl,--warn-common
+-Wl,--fatal-warnings
+-Wl,--gc-sections
+-T../../../../PiOS/STM32F10x/link_STM32103CB_PIPXTREME_memory.ld
+-T../../../../PiOS/STM32F10x/link_STM32103CB_PIPXTREME_BL_sections.ld

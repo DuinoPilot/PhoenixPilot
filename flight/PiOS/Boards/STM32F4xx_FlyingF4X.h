@@ -179,7 +179,6 @@ extern uintptr_t pios_com_debug_id;
 //
 #define PIOS_PERIPHERAL_APB2_CLOCK		PIOS_SYSCLK
 
-
 //-------------------------
 // Interrupt Priorities
 //-------------------------
