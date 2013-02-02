@@ -36,8 +36,8 @@
 #include "pios_usbhook.h"	/* PIOS_USBHOOK_* */
 /* Prototype of PIOS_Board_Init() function */
 extern void PIOS_Board_Init(void);
-extern void FLASH_Download();
-void check_bor();
+extern void FLASH_Download(void);
+void check_bor(void);
 #define BSL_HOLD_STATE ((PIOS_USB_DETECT_GPIO_PORT->IDR & PIOS_USB_DETECT_GPIO_PIN) ? 0 : 1)
 
 /* Private typedef -----------------------------------------------------------*/
@@ -66,10 +66,11 @@ bool GO_dfu = false;
 bool USB_connected = false;
 bool User_DFU_request = false;
 static uint8_t mReceive_Buffer[63];
+
 /* Private function prototypes -----------------------------------------------*/
 uint32_t LedPWM(uint32_t pwm_period, uint32_t pwm_sweep_steps, uint32_t count);
-uint8_t processRX();
-void jump_to_app();
+uint8_t processRX(void);
+void jump_to_app(void);
 
 int main() {
 	PIOS_SYS_Init();	
@@ -160,8 +161,7 @@ int main() {
 
 		if (stopwatch > 50 * 1000 * 1000)
 			stopwatch = 0;
-		if ((stopwatch > 6 * 1000 * 1000) && (DeviceState
-				== BLidle))
+		if ((stopwatch > 6 * 1000 * 1000) && (DeviceState == BLidle))
 			JumpToApp = true;
 
 		processRX();

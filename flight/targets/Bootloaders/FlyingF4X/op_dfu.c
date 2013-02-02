@@ -67,7 +67,7 @@ uint32_t aux;
 uint32_t downSizeOfLastPacket = 0;
 uint32_t downPacketTotal = 0;
 uint32_t downPacketCurrent = 0;
-DFUTransfer downType = 0;
+DFUTransfer downType = (DFUTransfer)0;
 /* Extern variables ----------------------------------------------------------*/
 extern DFUStates DeviceState;
 extern uint8_t JumpToApp;
@@ -133,7 +133,7 @@ void processComand(uint8_t *xReceive_Buffer) {
 	Data1 = xReceive_Buffer[DATA + 1];
 	Data2 = xReceive_Buffer[DATA + 2];
 	Data3 = xReceive_Buffer[DATA + 3];
-	Command = Command & 0b00011111;
+	Command = Command & 0x1F;
 
 	if (EchoReqFlag == 1) {
 		memcpy(echoBuffer, xReceive_Buffer, 64);
@@ -145,7 +145,7 @@ void processComand(uint8_t *xReceive_Buffer) {
 			if (Data0 > 0)
 				OPDfuIni(true);
 			DeviceState = DFUidle;
-			currentProgrammingDestination = devicesTable[Data0].programmingType;
+			currentProgrammingDestination = (DFUProgType)devicesTable[Data0].programmingType;
 			currentDeviceCanRead = devicesTable[Data0].readWriteFlags & 0x01;
 			currentDeviceCanWrite = devicesTable[Data0].readWriteFlags >> 1
 					& 0x01;
@@ -337,7 +337,7 @@ void processComand(uint8_t *xReceive_Buffer) {
 #ifdef DEBUG_SSP
 			PIOS_COM_SendString(PIOS_COM_TELEM_USB,"COMMAND:DOWNLOAD_REQ 1|");
 #endif
-			downType = Data0;
+			downType = (DFUTransfer)Data0;
 			downPacketTotal = Count;
 			downSizeOfLastPacket = Data1;
 			if (isBiggerThanAvailable(downType, (downPacketTotal - 1) * 14 * 4
@@ -401,7 +401,7 @@ void OPDfuIni(uint8_t discover) {
 	dev.BL_Version = bdinfo->bl_rev;
 	dev.FW_Crc = CalcFirmCRC();
 	dev.devID = (bdinfo->board_type << 8) | (bdinfo->board_rev);
-	dev.devType = bdinfo->hw_type;
+	dev.devType = (DeviceType)bdinfo->hw_type;
 	numberOfDevices = 1;
 	devicesTable[0] = dev;
 	if (discover) {
@@ -412,41 +412,29 @@ uint32_t baseOfAdressType(DFUTransfer type) {
 	switch (type) {
 	case FW:
 		return currentDevice.startOfUserCode;
-		break;
 	case Descript:
 		return currentDevice.startOfUserCode + currentDevice.sizeOfCode;
-		break;
-	default:
-
-		return 0;
 	}
+	return 0;
 }
 uint8_t isBiggerThanAvailable(DFUTransfer type, uint32_t size) {
 	switch (type) {
 	case FW:
 		return (size > currentDevice.sizeOfCode) ? 1 : 0;
-		break;
 	case Descript:
 		return (size > currentDevice.sizeOfDescription) ? 1 : 0;
-		break;
-	default:
-		return true;
 	}
+	return true;
 }
 
 uint32_t CalcFirmCRC() {
 	switch (currentProgrammingDestination) {
 	case Self_flash:
 		return PIOS_BL_HELPER_CRC_Memory_Calc();
-		break;
 	case Remote_flash_via_spi:
 		return 0;
-		break;
-	default:
-		return 0;
-		break;
 	}
-
+	return 0;
 }
 void sendData(uint8_t * buf, uint16_t size) {
 	PIOS_COM_MSG_Send(PIOS_COM_TELEM_USB, buf, size);
@@ -456,14 +444,11 @@ bool flash_read(uint8_t * buffer, uint32_t adr, DFUProgType type) {
 	switch (type) {
 	case Remote_flash_via_spi:
 		return false; // We should not get this for the PipX
-		break;
 	case Self_flash:
 		for (uint8_t x = 0; x < 4; ++x) {
 			buffer[x] = *PIOS_BL_HELPER_FLASH_If_Read(adr + x);
 		}
 		return true;
-		break;
-	default:
-		return false;
 	}
+	return false;
 }

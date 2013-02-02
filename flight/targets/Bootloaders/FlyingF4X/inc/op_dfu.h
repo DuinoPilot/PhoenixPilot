@@ -27,6 +27,7 @@
 #ifndef __OP_DFU_H
 #define __OP_DFU_H
 #include "common.h"
+
 /* Includes ------------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 typedef struct {
