@@ -1,0 +1,56 @@
+PWM inputs:
+1: TIM4_CH1 (PB6)
+2: TIM3_CH2 (PB5)
+3: TIM3_CH3 (PB0)
+4: TIM3_CH4 (PB1)
+5: TIM5_CH1 (PA0)
+6: TIM5_CH2 (PA1)
+
+PWM ouputs:
+1: TIM4_CH4 / TIM11_CH1 (PB9)
+2: TIM4_CH3 / TIM10_CH1 (PB8)
+3: TIM4_CH2 (PB7)
+4: TIM1_CH1 (PA8)
+5: TIM3_CH1 (PB4)
+6: TIM5_CH3 / TIM9_CH1 / TIM2_CH3 (PA2)
+
+MPU6050 SCL -> I2C2_SCL (PB10)
+MPU6050 SDA -> I2C2_SDA (PB11)
+MPU6050 INT -> EXTI     (PC5)
+MPU6050 A0  -> GND
+
+HMC5883L SCL  -> I2C2_SCL (PB10)
+HMC5883L SDA  -> I2C2_SDA (PB11)
+HMC5883L DRDY ->
+
+BMP085 SCL    -> I2C2_SCL (PB10)
+BMP085 SDA    -> I2C2_SDA (PB11)
+BMP085 XCLR   -> XCLR     (PC4)
+BMP085 EOC    -> EOC      (PC11)
+
+SPI flash:
+FLASH D (1)     -> SPI1_MOSI (PA7)
+FLASH Q (8)     -> SPI1_MISO (PA6)
+FLASH C (2)     -> SPI1_SCK  (PA5)
+FLASH /S (4)    -> SPI1_NSS  (PA4)
+FLASH RST (3)   -> 3V
+FLASH VCC (6)   -> 3V
+FLASH /W (5)    -> 3V
+FLASH VSS (7)  -> GND
+
+JP7:									JP2:
+(3) -> SPI2_NSS / CAN2_RX (PB12)		(3) -> SPI2_SCK / CAN2_TX (PB13)
+(4) -> SPI2_MISO (PB14)					(4) -> SPI2_MOSI (PB15)
+(5) -> USART6_TX (PC6)					(5) -> USART6_RX (PC7)
+(6) -> USART1_TX (PA9)					(6) -> USART1_RX (PA10) inverted with (PB2)
+
+JP9:
+(1) -> GND			(2) -> VBAT
+(3)	-> (PC0)		(4) -> (PC1)
+(5)	-> (PC13)		(6) -> (PC14)
+(7)	-> GND			(8) -> (PC15)
+
+GPS:
+GPS_RX -> (PC12)
+GPS_TX -> (PD2)
+GPS_ON -> (PA3)
