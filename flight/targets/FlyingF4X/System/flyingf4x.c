@@ -103,7 +103,7 @@ int main()
 						 INIT_TASK_STACK, NULL, INIT_TASK_PRIORITY,
 						 &initTaskHandle);
 	PIOS_Assert(result == pdPASS);
-
+while(1){}
 	/* Start the FreeRTOS scheduler */
 	vTaskStartScheduler();
 
