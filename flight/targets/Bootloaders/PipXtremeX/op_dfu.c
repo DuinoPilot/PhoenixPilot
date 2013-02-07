@@ -10,28 +10,13 @@
  * @see        The GNU Public License (GPL) Version 3
  *
  *****************************************************************************/
-/*
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- */
 
-/* Includes ------------------------------------------------------------------*/
 #include "pios.h"
 #include "op_dfu.h"
 #include "pios_bl_helper.h"
 #include "pios_com_msg.h"
 #include <pios_board_info.h>
+
 //programmable devices
 Device devicesTable[10];
 uint8_t numberOfDevices = 0;
@@ -62,20 +47,21 @@ uint8_t Data2;
 uint8_t Data3;
 uint8_t offset = 0;
 uint32_t aux;
+
 //Download vars
 uint32_t downSizeOfLastPacket = 0;
 uint32_t downPacketTotal = 0;
 uint32_t downPacketCurrent = 0;
 DFUTransfer downType = 0;
-/* Extern variables ----------------------------------------------------------*/
+
 extern DFUStates DeviceState;
 extern uint8_t JumpToApp;
-/* Private function prototypes -----------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
+
 void sendData(uint8_t * buf, uint16_t size);
 uint32_t CalcFirmCRC(void);
 
 void DataDownload(DownloadAction action) {
+
 	if ((DeviceState == downloading)) {
 
 		uint8_t packetSize;
@@ -108,14 +94,17 @@ void DataDownload(DownloadAction action) {
 		sendData(SendBuffer + 1, 63);
 	}
 }
+
 void processComand(uint8_t *xReceive_Buffer) {
 
 	Command = xReceive_Buffer[COMMAND];
+
 #ifdef DEBUG_SSP
 	char str[63]= {0};
 	sprintf(str,"Received COMMAND:%d|",Command);
 	PIOS_COM_SendString(PIOS_COM_TELEM_USB,str);
 #endif
+
 	EchoReqFlag = (Command >> 7);
 	EchoAnsFlag = (Command >> 6) & 0x01;
 	StartFlag = (Command >> 5) & 0x01;
@@ -201,7 +190,6 @@ void processComand(uint8_t *xReceive_Buffer) {
 						DeviceState = Last_operation_failed;
 						Aditionals = (uint32_t) Command;
 					} else {
-
 						DeviceState = uploading;
 					}
 				}
@@ -387,6 +375,7 @@ void processComand(uint8_t *xReceive_Buffer) {
 	}
 	return;
 }
+
 void OPDfuIni(uint8_t discover) {
 	const struct pios_board_info * bdinfo = &pios_board_info_blob;
 	Device dev;
@@ -406,6 +395,7 @@ void OPDfuIni(uint8_t discover) {
 		//TODO check other devices trough spi or whatever
 	}
 }
+
 uint32_t baseOfAdressType(DFUTransfer type) {
 	switch (type) {
 	case FW:
@@ -419,6 +409,7 @@ uint32_t baseOfAdressType(DFUTransfer type) {
 		return 0;
 	}
 }
+
 uint8_t isBiggerThanAvailable(DFUTransfer type, uint32_t size) {
 	switch (type) {
 	case FW:
@@ -444,8 +435,8 @@ uint32_t CalcFirmCRC() {
 		return 0;
 		break;
 	}
-
 }
+
 void sendData(uint8_t * buf, uint16_t size) {
 	PIOS_COM_MSG_Send(PIOS_COM_TELEM_USB, buf, size);
 }
@@ -465,3 +456,22 @@ bool flash_read(uint8_t * buffer, uint32_t adr, DFUProgType type) {
 		return FALSE;
 	}
 }
+
+/**
+ * @}
+ */
+/*
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */

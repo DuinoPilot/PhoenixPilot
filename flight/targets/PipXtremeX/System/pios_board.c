@@ -1,4 +1,4 @@
-/* -*- Mode: c; c-basic-offset: 2; tab-width: 2; indent-tabs-mode: t -*- */
+/* -*- Mode: c; c-basic-offset: 2; tab-width: 4; indent-tabs-mode: t -*- */
 /**
  ******************************************************************************
  * @addtogroup OpenPilotSystem OpenPilot System
@@ -12,54 +12,41 @@
  * @see        The GNU Public License (GPL) Version 3
  *
  *****************************************************************************/
-/* 
- * This program is free software; you can redistribute it and/or modify 
- * it under the terms of the GNU General Public License as published by 
- * the Free Software Foundation; either version 3 of the License, or 
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
- * for more details.
- * 
- * You should have received a copy of the GNU General Public License along 
- * with this program; if not, write to the Free Software Foundation, Inc., 
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- */
 
 #include <pios.h>
 #include <openpilot.h>
 #include <oplinksettings.h>
 #include <board_hw_defs.c>
 
-#define PIOS_COM_TELEM_RX_BUF_LEN 256
-#define PIOS_COM_TELEM_TX_BUF_LEN 256
+#define PIOS_COM_TELEM_RX_BUF_LEN		256
+#define PIOS_COM_TELEM_TX_BUF_LEN		256
 
-#define PIOS_COM_TELEM_USB_RX_BUF_LEN 256
-#define PIOS_COM_TELEM_USB_TX_BUF_LEN 256
+#define PIOS_COM_TELEM_USB_RX_BUF_LEN	256
+#define PIOS_COM_TELEM_USB_TX_BUF_LEN	256
 
-#define PIOS_COM_TELEM_VCP_RX_BUF_LEN 256
-#define PIOS_COM_TELEM_VCP_TX_BUF_LEN 256
+#define PIOS_COM_TELEM_VCP_RX_BUF_LEN	256
+#define PIOS_COM_TELEM_VCP_TX_BUF_LEN	256
 
-#define PIOS_COM_RFM22B_RF_RX_BUF_LEN 256
-#define PIOS_COM_RFM22B_RF_TX_BUF_LEN 256
+#define PIOS_COM_RFM22B_RF_RX_BUF_LEN	256
+#define PIOS_COM_RFM22B_RF_TX_BUF_LEN	256
 
-#define PIOS_COM_RFM22B_RF_RX_BUF_LEN 256
-#define PIOS_COM_RFM22B_RF_TX_BUF_LEN 256
+#define PIOS_COM_RFM22B_RF_RX_BUF_LEN	256
+#define PIOS_COM_RFM22B_RF_TX_BUF_LEN	256
 
-uintptr_t pios_com_telem_usb_id = 0;
-uintptr_t pios_com_telem_vcp_id = 0;
-uintptr_t pios_com_telem_uart_telem_id = 0;
-uintptr_t pios_com_telem_uart_flexi_id = 0;
-uintptr_t pios_com_telemetry_id = 0;
+uintptr_t pios_com_telem_usb_id			= 0;
+uintptr_t pios_com_telem_vcp_id			= 0;
+uintptr_t pios_com_telem_uart_telem_id	= 0;
+uintptr_t pios_com_telem_uart_flexi_id	= 0;
+uintptr_t pios_com_telemetry_id			= 0;
+
 #if defined(PIOS_INCLUDE_PPM)
-uint32_t pios_ppm_rcvr_id = 0;
+	uint32_t pios_ppm_rcvr_id = 0;
 #endif
+
 #if defined(PIOS_INCLUDE_RFM22B)
-uint32_t pios_rfm22b_id = 0;
-uintptr_t pios_com_rfm22b_id = 0;
-uintptr_t pios_com_radio_id = 0;
+	uint32_t pios_rfm22b_id			= 0;
+	uintptr_t pios_com_rfm22b_id	= 0;
+	uintptr_t pios_com_radio_id		= 0;
 #endif
 
 /**
@@ -75,7 +62,7 @@ void PIOS_Board_Init(void) {
 	/* Initialize UAVObject libraries */
 	EventDispatcherInitialize();
 	UAVObjInitialize();
-	
+
 	/* Set up the SPI interface to the rfm22b */
 	if (PIOS_SPI_Init(&pios_spi_rfm22b_id, &pios_spi_rfm22b_cfg)) {
 		PIOS_DEBUG_Assert(0);
@@ -98,8 +85,9 @@ void PIOS_Board_Init(void) {
 #endif	/* PIOS_INCLUDE_LED */
 
 	OPLinkSettingsData oplinkSettings;
+
 #if defined(PIOS_INCLUDE_FLASH_EEPROM)
- 	PIOS_EEPROM_Init(&pios_eeprom_cfg);
+	PIOS_EEPROM_Init(&pios_eeprom_cfg);
 
 	/* Read the settings from flash. */
 	/* NOTE: We probably need to save/restore the objID here incase the object changed but the size doesn't */
@@ -153,9 +141,13 @@ void PIOS_Board_Init(void) {
 		uint8_t *tx_buffer = (uint8_t *)pvPortMalloc(PIOS_COM_TELEM_USB_TX_BUF_LEN);
 		PIOS_Assert(rx_buffer);
 		PIOS_Assert(tx_buffer);
-		if (PIOS_COM_Init(&pios_com_telem_usb_id, &pios_usb_hid_com_driver, pios_usb_hid_id,
-											rx_buffer, PIOS_COM_TELEM_USB_RX_BUF_LEN,
-											tx_buffer, PIOS_COM_TELEM_USB_TX_BUF_LEN)) {
+		if (PIOS_COM_Init(
+				&pios_com_telem_usb_id,
+				&pios_usb_hid_com_driver,
+				pios_usb_hid_id,
+				rx_buffer, PIOS_COM_TELEM_USB_RX_BUF_LEN,
+				tx_buffer, PIOS_COM_TELEM_USB_TX_BUF_LEN)
+			) {
 			PIOS_Assert(0);
 		}
 	}
@@ -172,9 +164,13 @@ void PIOS_Board_Init(void) {
 		uint8_t *tx_buffer = (uint8_t *)pvPortMalloc(PIOS_COM_TELEM_VCP_TX_BUF_LEN);
 		PIOS_Assert(rx_buffer);
 		PIOS_Assert(tx_buffer);
-		if (PIOS_COM_Init(&pios_com_telem_vcp_id, &pios_usb_cdc_com_driver, pios_usb_cdc_id,
-											rx_buffer, PIOS_COM_TELEM_VCP_RX_BUF_LEN,
-											tx_buffer, PIOS_COM_TELEM_VCP_TX_BUF_LEN)) {
+		if (PIOS_COM_Init(
+				&pios_com_telem_vcp_id,
+				&pios_usb_cdc_com_driver,
+				pios_usb_cdc_id,
+				rx_buffer, PIOS_COM_TELEM_VCP_RX_BUF_LEN,
+				tx_buffer, PIOS_COM_TELEM_VCP_TX_BUF_LEN)
+			) {
 			PIOS_Assert(0);
 		}
 	}
@@ -191,9 +187,13 @@ void PIOS_Board_Init(void) {
 		uint8_t *tx_buffer = (uint8_t *)pvPortMalloc(PIOS_COM_TELEM_TX_BUF_LEN);
 		PIOS_Assert(rx_buffer);
 		PIOS_Assert(tx_buffer);
-		if (PIOS_COM_Init(&pios_com_telem_uart_telem_id, &pios_usart_com_driver, pios_usart1_id,
-											rx_buffer, PIOS_COM_TELEM_RX_BUF_LEN,
-											tx_buffer, PIOS_COM_TELEM_TX_BUF_LEN)) {
+		if (PIOS_COM_Init(
+				&pios_com_telem_uart_telem_id,
+				&pios_usart_com_driver,
+				pios_usart1_id,
+				rx_buffer, PIOS_COM_TELEM_RX_BUF_LEN,
+				tx_buffer, PIOS_COM_TELEM_TX_BUF_LEN)
+			) {
 			PIOS_Assert(0);
 		}
 	}
@@ -222,15 +222,19 @@ void PIOS_Board_Init(void) {
 		uint8_t * tx_buffer = (uint8_t *) pvPortMalloc(PIOS_COM_TELEM_TX_BUF_LEN);
 		PIOS_Assert(rx_buffer);
 		PIOS_Assert(tx_buffer);
-		if (PIOS_COM_Init(&pios_com_telem_uart_flexi_id, &pios_usart_com_driver, pios_usart3_id,
-											rx_buffer, PIOS_COM_TELEM_RX_BUF_LEN,
-											tx_buffer, PIOS_COM_TELEM_TX_BUF_LEN)) {
+		if (PIOS_COM_Init(
+				&pios_com_telem_uart_flexi_id,
+				&pios_usart_com_driver,
+				pios_usart3_id,
+				rx_buffer, PIOS_COM_TELEM_RX_BUF_LEN,
+				tx_buffer, PIOS_COM_TELEM_TX_BUF_LEN)
+			) {
 			PIOS_Assert(0);
 		}
 	}
 
-	/* Initalize the RFM22B radio COM device. */
 #if defined(PIOS_INCLUDE_RFM22B)
+	/* Initalize the RFM22B radio COM device. */
 	{
 		extern const struct pios_rfm22b_cfg * PIOS_BOARD_HW_DEFS_GetRfm22Cfg (uint32_t board_revision);
 		const struct pios_board_info * bdinfo = &pios_board_info_blob;
@@ -243,9 +247,13 @@ void PIOS_Board_Init(void) {
 		uint8_t *tx_buffer = (uint8_t *) pvPortMalloc(PIOS_COM_RFM22B_RF_TX_BUF_LEN);
 		PIOS_Assert(rx_buffer);
 		PIOS_Assert(tx_buffer);
-		if (PIOS_COM_Init(&pios_com_rfm22b_id, &pios_rfm22b_com_driver, pios_rfm22b_id,
-											rx_buffer, PIOS_COM_RFM22B_RF_RX_BUF_LEN,
-											tx_buffer, PIOS_COM_RFM22B_RF_TX_BUF_LEN)) {
+		if (PIOS_COM_Init(
+				&pios_com_rfm22b_id,
+				&pios_rfm22b_com_driver,
+				pios_rfm22b_id,
+				rx_buffer, PIOS_COM_RFM22B_RF_RX_BUF_LEN,
+				tx_buffer, PIOS_COM_RFM22B_RF_TX_BUF_LEN)
+			) {
 			PIOS_Assert(0);
 		}
 	}
@@ -257,9 +265,26 @@ void PIOS_Board_Init(void) {
 #ifdef PIOS_INCLUDE_ADC
 	PIOS_ADC_Init();
 #endif
- 	PIOS_GPIO_Init();
+
+	PIOS_GPIO_Init();
 }
 
 /**
  * @}
+ * @}
+ */
+/* 
+ * This program is free software; you can redistribute it and/or modify 
+ * it under the terms of the GNU General Public License as published by 
+ * the Free Software Foundation; either version 3 of the License, or 
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
+ * for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along 
+ * with this program; if not, write to the Free Software Foundation, Inc., 
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */

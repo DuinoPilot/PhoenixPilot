@@ -1,3 +1,28 @@
+#ifndef PIOS_CONFIG_POSIX_H
+#define PIOS_CONFIG_POSIX_H
+
+/* Enable/Disable PiOS Modules */
+#define PIOS_INCLUDE_SYS
+#define PIOS_INCLUDE_DELAY
+#define PIOS_INCLUDE_LED
+#define PIOS_INCLUDE_FREERTOS
+#define PIOS_INCLUDE_COM
+#define PIOS_INCLUDE_UDP
+#define PIOS_INCLUDE_SERVO
+
+/* Defaults for Logging */
+#define LOG_FILENAME 			"PIOS.LOG"
+#define STARTUP_LOG_ENABLED		1
+
+/* COM Module */
+#define GPS_BAUDRATE			19200
+#define TELEM_BAUDRATE			19200
+#define AUXUART_ENABLED			0
+#define AUXUART_BAUDRATE		19200
+
+
+#endif /* PIOS_CONFIG_POSIX_H */
+
 /**
  ******************************************************************************
  *
@@ -23,31 +48,3 @@
  * with this program; if not, write to the Free Software Foundation, Inc., 
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-
-
-#ifndef PIOS_CONFIG_POSIX_H
-#define PIOS_CONFIG_POSIX_H
-
-
-/* Enable/Disable PiOS Modules */
-#define PIOS_INCLUDE_SYS
-#define PIOS_INCLUDE_DELAY
-#define PIOS_INCLUDE_LED
-#define PIOS_INCLUDE_FREERTOS
-#define PIOS_INCLUDE_COM
-#define PIOS_INCLUDE_UDP
-#define PIOS_INCLUDE_SERVO
-
-
-/* Defaults for Logging */
-#define LOG_FILENAME 			"PIOS.LOG"
-#define STARTUP_LOG_ENABLED		1
-
-/* COM Module */
-#define GPS_BAUDRATE			19200
-#define TELEM_BAUDRATE			19200
-#define AUXUART_ENABLED			0
-#define AUXUART_BAUDRATE		19200
-
-
-#endif /* PIOS_CONFIG_POSIX_H */

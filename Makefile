@@ -739,12 +739,12 @@ all_$(1)_clean: $$(addsuffix _clean, $$(filter bu_$(1), $$(BU_TARGETS)))
 all_$(1)_clean: $$(addsuffix _clean, $$(filter ef_$(1), $$(EF_TARGETS)))
 endef
 
-ALL_BOARDS := coptercontrol pipxtreme revolution revomini osd freedom quanton discoveryf4 flyingf4 flyingf3 flyingf4x pipxtremeX
+ALL_BOARDS := coptercontrol pipxtreme revolution revomini osd freedom quanton discoveryf4 flyingf4 flyingf3 flyingf4x pipxtremex
 
 # Friendly names of each board (used to find source tree)
 coptercontrol_friendly := CopterControl
 pipxtreme_friendly     := PipXtreme
-pipxtremeX_friendly    := PipXtremeX
+pipxtremex_friendly    := PipXtremeX
 revolution_friendly    := Revolution
 revomini_friendly      := RevoMini
 freedom_friendly       := Freedom
@@ -767,7 +767,7 @@ quanton_short          := 'quan'
 flyingf4_short         := 'fly4'
 discoveryf4_short      := 'dif4'
 flyingf3_short         := 'fly3'
-flyingf4x_short        := 'fly4x'
+flyingf4x_short        := 'fly4X'
 
 # Start out assuming that we'll build fw, bl and bu for all boards
 FW_BOARDS  := $(ALL_BOARDS)

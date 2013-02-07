@@ -12,6 +12,33 @@
  * @see        The GNU Public License (GPL) Version 3
  *
  *****************************************************************************/
+#ifndef PIOS_USB_BOARD_DATA_H
+#define PIOS_USB_BOARD_DATA_H
+
+#define PIOS_USB_BOARD_HID_DATA_LENGTH	64
+#define PIOS_USB_BOARD_EP_NUM			2
+
+#include "pios_usb_defs.h" 	/* struct usb_* */
+
+#define PIOS_USB_BOARD_VENDOR_ID	USB_VENDOR_ID_OPENPILOT
+#define PIOS_USB_BOARD_PRODUCT_ID	USB_PRODUCT_ID_PIPXTREME
+#define PIOS_USB_BOARD_DEVICE_VER	USB_OP_DEVICE_VER(USB_OP_BOARD_ID_PIPXTREME, USB_OP_BOARD_MODE_BL)
+#define PIOS_USB_BOARD_SN_SUFFIX	"+BL"
+
+/*
+ * The bootloader uses a simplified report structure
+ *   BL: <REPORT_ID><DATA>...<DATA>
+ *   FW: <REPORT_ID><LENGTH><DATA>...<DATA>
+ * This define changes the behaviour in pios_usb_hid.c
+ */
+#define PIOS_USB_BOARD_BL_HID_HAS_NO_LENGTH_BYTE
+
+#endif	/* PIOS_USB_BOARD_DATA_H */
+
+/**
+ * @}
+ * @}
+ */
 /*
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,26 +55,3 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef PIOS_USB_BOARD_DATA_H
-#define PIOS_USB_BOARD_DATA_H
-
-#define PIOS_USB_BOARD_HID_DATA_LENGTH 64
-
-#define PIOS_USB_BOARD_EP_NUM 2
-
-#include "pios_usb_defs.h" 	/* struct usb_* */
-
-#define PIOS_USB_BOARD_VENDOR_ID USB_VENDOR_ID_OPENPILOT
-#define PIOS_USB_BOARD_PRODUCT_ID USB_PRODUCT_ID_PIPXTREME
-#define PIOS_USB_BOARD_DEVICE_VER USB_OP_DEVICE_VER(USB_OP_BOARD_ID_PIPXTREME, USB_OP_BOARD_MODE_BL)
-#define PIOS_USB_BOARD_SN_SUFFIX "+BL"
-
-/*
- * The bootloader uses a simplified report structure
- *   BL: <REPORT_ID><DATA>...<DATA>
- *   FW: <REPORT_ID><LENGTH><DATA>...<DATA>
- * This define changes the behaviour in pios_usb_hid.c
- */
-#define PIOS_USB_BOARD_BL_HID_HAS_NO_LENGTH_BYTE
-
-#endif	/* PIOS_USB_BOARD_DATA_H */

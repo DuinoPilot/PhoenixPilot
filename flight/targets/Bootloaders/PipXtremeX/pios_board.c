@@ -7,33 +7,18 @@
  * @see        The GNU Public License (GPL) Version 3
  *
  *****************************************************************************/
-/*
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- */
 
 #include "board_hw_defs.c"
 #include <pios.h>
 
 uintptr_t pios_com_telem_usb_id;
+static bool board_init_complete = false;
 
 /**
  * PIOS_Board_Init()
  * initializes all the core subsystems on this specific hardware
  * called from System/openpilot.c
  */
-static bool board_init_complete = false;
 void PIOS_Board_Init(void) {
 	if (board_init_complete) {
 		return;
@@ -66,6 +51,7 @@ void PIOS_Board_Init(void) {
 	if (PIOS_USB_Init(&pios_usb_id, &pios_usb_main_cfg)) {
 		PIOS_Assert(0);
 	}
+
 #if defined(PIOS_INCLUDE_USB_HID) && defined(PIOS_INCLUDE_COM_MSG)
 	uint32_t pios_usb_hid_id;
 	if (PIOS_USB_HID_Init(&pios_usb_hid_id, &pios_usb_hid_cfg, pios_usb_id)) {
@@ -78,7 +64,22 @@ void PIOS_Board_Init(void) {
 
 #endif	/* PIOS_INCLUDE_USB */
 
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_CRC, ENABLE);//TODO Tirar
-
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_CRC, ENABLE);	//TODO Tirar
 	board_init_complete = true;
 }
+
+/*
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */

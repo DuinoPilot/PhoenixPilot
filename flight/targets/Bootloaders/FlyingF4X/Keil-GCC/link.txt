@@ -1,6 +1,0 @@
--Wl,-static
--Wl,--warn-common
--Wl,--fatal-warnings
--Wl,--gc-sections
--T../../../../PiOS/STM32F4xx//link_STM32F4xx_BL_memory.ld
--T../../../../PiOS/STM32F4xx//link_STM32F4xx_sections.ld
